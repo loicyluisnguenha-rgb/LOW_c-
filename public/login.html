@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: Arial, sans-serif; background:#f6f7fb; margin:0; padding:20px; }
+  .container { max-width:400px; margin:auto; background:#fff; padding:20px; border-radius:8px;
+               box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+  h1 { color:#007acc; margin-bottom:20px; }
+  form { display:flex; flex-direction:column; gap:12px; }
+  input { padding:10px; border:1px solid #ccc; border-radius:6px; }
+  button { background:#007acc; color:#fff; border:none; padding:10px; border-radius:6px; cursor:pointer; }
+  button:hover { background:#005fa3; }
+  #loginMsg { margin-top:10px; color:red; }
+</style>
+</head>
+<body>
+<main class="container">
+  <h1>Login</h1>
+  <form id="fLogin">
+    <label>Email <input type="email" name="email" required></label>
+    <label>Senha <input type="password" name="password" required></label>
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="loginMsg"></p>
+</main>
+
+<script src="js/app.js"></script>
+<script>
+const $ = (s, el=document)=>el.querySelector(s);
+
+$('#fLogin').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  $('#loginMsg').textContent = '';
+  const payload = Object.fromEntries(new FormData(ev.target));
+  try{
+    const r = await api('/auth/login','POST',payload);
+    if (r.ok) {
+      sessionStorage.setItem('otp_user_id', r.user_id);
+      sessionStorage.setItem('user_email_plain', payload.email);
+      sessionStorage.setItem('user_name_plain', payload.email.split('@')[0]);
+      location.href = 'otp.html';
+    }
+  }catch(err){
+    $('#loginMsg').textContent = 'Erro: ' + err.message;
+  }
+});
+</script>
+</body>
+</html>

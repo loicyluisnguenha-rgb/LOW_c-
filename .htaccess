@@ -1,0 +1,9 @@
+# Não força HTTPS em localhost
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^localhost
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Mantém Authorization header para PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

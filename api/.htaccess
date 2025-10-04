@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteBase /simple-otp-crud/api/
+
+# Se não existir ficheiro nem pasta, envia tudo para index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Garante que o cabeçalho Authorization chega ao PHP
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1

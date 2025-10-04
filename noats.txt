@@ -1,0 +1,1 @@
+Colocar as chaves dos dados enciptados do user na BD no ficheiro env Para fazer a tarefa de um key generator server

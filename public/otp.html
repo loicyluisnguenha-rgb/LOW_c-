@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt">
+<meta charset="utf-8">
+<title>Verificar OTP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/missing.css">
+
+<main class="container">
+  <h1>Verificação OTP</h1>
+  <form id="fOtp">
+    <label>Código OTP 
+      <input name="code" autocomplete="one-time-code" required>
+    </label>
+    <button type="submit">Confirmar</button>
+  </form>
+  <p id="otpMsg"></p>
+</main>
+
+<script src="js/app.js"></script>
+<script>
+const $ = (s, el=document)=>el.querySelector(s);
+
+$('#fOtp').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  $('#otpMsg').textContent = '';
+  const code = new FormData(ev.target).get('code');
+  try {
+    const email = sessionStorage.getItem('user_email_plain');
+    if (!email) {
+      $('#otpMsg').textContent = 'Erro: email não encontrado na sessão.';
+      return;
+    }
+    const r = await api('/auth/verify-otp','POST',{ email, code });
+
+    // ✅ o backend já setou o cookie HttpOnly
+    sessionStorage.removeItem('otp_user_id');
+    location.href = 'dashboard.php';
+
+  } catch(err) {
+    $('#otpMsg').textContent = 'Erro: ' + err.message;
+  }
+});
+</script>
+</html>
