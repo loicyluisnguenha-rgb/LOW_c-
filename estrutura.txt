@@ -1,0 +1,20 @@
+simple-otp-crud/
+│
+├── .env
+├── .htaccess
+├── README.md
+├── credenciais.txt
+├── noats.txt
+│
+├── api/
+│   ├── .htaccess
+│   ├── index.php              → ponto de entrada da API (roteamento)
+│   ├── db.php                 → ligação à base de dados (PDO)
+│   ├── utils.php              → funções auxiliares (JSON, tokens, HTTPS, etc.)
+│   ├── mailer.php             → envio de OTP via e-mail (PHPMailer)
+│   └── AuthController.php     → registo, login e verificação OTP
+│
+└── lib/
+    ├── composer.json          → dependências do projeto
+    ├── composer.lock          → versões exatas instaladas
+    └── vendor/                → bibliotecas externas (PHPMailer, Symfony, etc.)
