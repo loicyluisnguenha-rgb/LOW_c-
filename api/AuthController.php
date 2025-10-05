@@ -17,7 +17,7 @@ public static function register(): void {
     $name  = trim($in['name']  ?? '');
     $email = trim($in['email'] ?? '');
     $pass  = (string)($in['password'] ?? '');
-    $roleId = (int)($in['role_id'] ?? 2); // padrão "user"
+    $roleId = (int)($in['role_id'] ?? 2); 
 
     if ($name===''||$email===''||$pass==='') {
       json_out(400,['ok'=>false,'error'=>'Nome, email e senha são obrigatórios']); return;
@@ -43,7 +43,6 @@ public static function register(): void {
 
     $uid=(int)$db->lastInsertId();
 
-    // 🚫 Não gera OTP no registo
     audit_log($db, $uid, "Novo registo (admin)");
 
     json_out(201,['ok'=>true,'message'=>'Conta criada com sucesso.','user_id'=>$uid,'role_id'=>$roleId]);
@@ -147,8 +146,8 @@ public static function register(): void {
     // ✅ Setar cookie HttpOnly para todo o domínio
     setcookie("session_token", $token, [
       'expires'  => time()+3600,
-      'path'     => "/",                // universal
-      'secure'   => is_https(),         // localhost=false; produção=true
+      'path'     => "/",                
+      'secure'   => is_https(),        
       'httponly' => true,
       'samesite' => 'Lax'
     ]);

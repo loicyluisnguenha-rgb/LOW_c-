@@ -1,11 +1,6 @@
 <?php 
 declare(strict_types=1);
 
-/**
- * Cabeçalhos só para a API (rota contém /api/)
- * Assim as páginas .php normais (users.php, items.php, audit.php, dashboard.php)
- * continuam a renderizar como HTML no browser.
- */
 if (!headers_sent() && str_contains($_SERVER['REQUEST_URI'] ?? '', '/api/')) {
   header('Content-Type: application/json; charset=utf-8');
 
@@ -54,7 +49,7 @@ function bearer_token(): ?string {
 function require_https(): void {
   if (PHP_SAPI === 'cli') return;
   if (is_https()) return;
-  if (($_SERVER['HTTP_HOST'] ?? '') === 'localhost') return; // dev local
+  if (($_SERVER['HTTP_HOST'] ?? '') === 'localhost') return; 
   json_out(403, ['ok'=>false,'error'=>'Requer HTTPS']);
 }
 
